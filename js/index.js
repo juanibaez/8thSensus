@@ -74,23 +74,23 @@ $.ajax({
 
             console.log(hourBefore + ' - ' + hourAfter);
 
-            accountLicenses = alasql("SELECT COUNT(DISTINCT userid) licenses FROM ?",[result]);
+            accountLicenses = alasql("SELECT COUNT(distinct UPPER(userid)) as licenses FROM ?",[result]);
             accountDevices = alasql("SELECT COUNT(DISTINCT userid) devices FROM ?",[result]);
             accountIntrusions = alasql("SELECT COUNT(DISTINCT userid) intrusions FROM ? WHERE utc >= '" + hourBefore + "' and utc < '" + hourAfter + "' and (diagcode = 'D0011' or diagcode = 'D0012') order by utc",[result]);
             accountAlerts = alasql("SELECT COUNT(userid) alerts FROM ? WHERE utc >= '" + hourBefore + "' and utc < '" + hourAfter + "' order by utc",[result]);
 
-            var countLicenses = accountLicenses[0].licenses
-            var countDevices = accountDevices[0].devices
+            var countLicenses = accountLicenses[0].licenses;
+            var countDevices = accountDevices[0].devices;
             console.log(countDevices);
-            var countIntrusions = accountIntrusions[0].intrusions
-            var countAlerts = accountAlerts[0].alerts
+            var countIntrusions = accountIntrusions[0].intrusions;
+            var countAlerts = accountAlerts[0].alerts;
 
             $('#licUser').html(countLicenses);
             tAccountLicenses = countLicenses;
             $('#activeUsers_24hours').html(countLicenses);
             /*graph*/
             /*Devices*/
-            let devicesAction = countDevices;
+            let devicesAction = countLicenses; console.log(countLicenses);
             var doughnutData = {
                 labels: ["Active","Inactive"],
                 datasets: [{
